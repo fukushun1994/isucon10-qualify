@@ -13,7 +13,7 @@ CREATE TABLE isuumo.estate
     address     VARCHAR(128)        NOT NULL,
     latitude    DOUBLE PRECISION    NOT NULL,
     longitude   DOUBLE PRECISION    NOT NULL,
-    point_text  VARCHAR(64) AS (CONCAT('POINT(', latitude, ',', longitude, ')'))
+    point_text  VARCHAR(64) AS (CONCAT('POINT(', latitude, ',', longitude, ')')),
     rent        INTEGER             NOT NULL,
     door_height INTEGER             NOT NULL,
     door_width  INTEGER             NOT NULL,
