@@ -10,6 +10,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -588,8 +589,8 @@ func getChairSearchCondition(c echo.Context) error {
 
 func getLowPricedChair(c echo.Context) error {
 	var chairs []Chair
-	query := `SELECT * FROM chair WHERE stock > 0 ORDER BY price ASC, id ASC LIMIT ?`
-	err := db.Select(&chairs, query, Limit)
+	query := `SELECT * FROM chair WHERE stock > 0`
+	err := db.Select(&chairs, query)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			c.Logger().Error("getLowPricedChair not found")
@@ -598,8 +599,14 @@ func getLowPricedChair(c echo.Context) error {
 		c.Logger().Errorf("getLowPricedChair DB execution error : %v", err)
 		return c.NoContent(http.StatusInternalServerError)
 	}
+	sort.Slice(chairs, func(i, j int) bool {
+		if chairs[i].Price < chairs[j].Price {
+			return true
+		}
+		return chairs[i].Price == chairs[j].Price && chairs[i].ID < chairs[j].ID
+	})
 
-	return c.JSON(http.StatusOK, ChairListResponse{Chairs: chairs})
+	return c.JSON(http.StatusOK, ChairListResponse{Chairs: chairs[:Limit]})
 }
 
 func getEstateDetail(c echo.Context) error {
