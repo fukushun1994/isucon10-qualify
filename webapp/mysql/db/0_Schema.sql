@@ -16,8 +16,8 @@ CREATE TABLE isuumo.estate
     rent        INTEGER             NOT NULL,
     door_height INTEGER             NOT NULL,
     door_width  INTEGER             NOT NULL,
-    door_long   INTEGER AS (MAX(door_height, door_width)),
-    door_short   INTEGER AS (MIN(door_height, door_width)),
+    door_long   INTEGER AS (CASE WHEN door_height > door_width THEN door_height ELSE door_width END),
+    door_short  INTEGER AS (CASE WHEN door_height < door_width THEN door_height ELSE door_width END),
     features    VARCHAR(64)         NOT NULL,
     popularity  INTEGER             NOT NULL,
     INDEX door_size(door_long, door_short)
