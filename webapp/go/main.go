@@ -667,7 +667,7 @@ func postEstate(c echo.Context) error {
 	}
 	defer tx.Rollback()
 	values := make([]string, len(records))
-	for _, row := range records {
+	for i, row := range records {
 		rm := RecordMapper{Record: row}
 		id := rm.NextInt()
 		name := rm.NextString()
@@ -685,7 +685,7 @@ func postEstate(c echo.Context) error {
 			c.Logger().Errorf("failed to read record: %v", err)
 			return c.NoContent(http.StatusBadRequest)
 		}
-		values = append(values, fmt.Sprintf("(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", id, name, description, thumbnail, address, latitude, longitude, rent, doorHeight, doorWidth, features, popularity))
+		values[i] = fmt.Sprintf("(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", id, name, description, thumbnail, address, latitude, longitude, rent, doorHeight, doorWidth, features, popularity)
 	}
 	query := fmt.Sprintf("INSERT INTO estate(id, name, description, thumbnail, address, latitude, longitude, rent,door_height, door_width, features, popularity) VALUES %s", strings.Join(values, ","))
 	_, err = tx.Exec(query)
