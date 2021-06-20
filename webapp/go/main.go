@@ -687,7 +687,8 @@ func postEstate(c echo.Context) error {
 		}
 		values = append(values, fmt.Sprintf("(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", id, name, description, thumbnail, address, latitude, longitude, rent, doorHeight, doorWidth, features, popularity))
 	}
-	_, err = tx.Exec("INSERT INTO estate(id, name, description, thumbnail, address, latitude, longitude, rent,door_height, door_width, features, popularity) VALUES %s", strings.Join(values, ","))
+	query := fmt.Sprintf("INSERT INTO estate(id, name, description, thumbnail, address, latitude, longitude, rent,door_height, door_width, features, popularity) VALUES %s", strings.Join(values, ","))
+	_, err = tx.Exec(query)
 	if err != nil {
 		c.Logger().Errorf("failed to insert estate: %v", err)
 		return c.NoContent(http.StatusInternalServerError)
