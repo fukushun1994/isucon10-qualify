@@ -10,6 +10,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"sort"
 	"strconv"
 	"strings"
 
@@ -834,11 +835,9 @@ func searchRecommendedEstateWithChair(c echo.Context) error {
 	}
 
 	var estates []Estate
-	w := chair.Width
-	h := chair.Height
-	d := chair.Depth
-	query = `SELECT * FROM estate WHERE (door_width >= ? AND door_height >= ?) OR (door_width >= ? AND door_height >= ?) OR (door_width >= ? AND door_height >= ?) OR (door_width >= ? AND door_height >= ?) OR (door_width >= ? AND door_height >= ?) OR (door_width >= ? AND door_height >= ?) ORDER BY popularity DESC, id ASC LIMIT ?`
-	err = db.Select(&estates, query, w, h, w, d, h, w, h, d, d, w, d, h, Limit)
+	long, short := getChairRect(chair)
+	query = `SELECT * FROM estate WHERE door_long >= ? AND door_short >= ? ORDER BY popularity DESC, id ASC LIMIT ?`
+	err = db.Select(&estates, query, long, short, Limit)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return c.JSON(http.StatusOK, EstateListResponse{[]Estate{}})
@@ -848,6 +847,16 @@ func searchRecommendedEstateWithChair(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, EstateListResponse{Estates: estates})
+}
+
+func getChairRect(c Chair) (long, short int64) {
+	sizes := []int64{
+		c.Width,
+		c.Height,
+		c.Depth,
+	}
+	sort.Slice(sizes, func(i, j int) bool { return sizes[i] < sizes[j] })
+	return sizes[1], sizes[0]
 }
 
 func searchEstateNazotte(c echo.Context) error {
