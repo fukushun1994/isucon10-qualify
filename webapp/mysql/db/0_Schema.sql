@@ -13,7 +13,7 @@ CREATE TABLE isuumo.estate
     address     VARCHAR(128)        NOT NULL,
     latitude    DOUBLE PRECISION    NOT NULL,
     longitude   DOUBLE PRECISION    NOT NULL,
-    point_text  VARCHAR(64) AS (CONCAT('POINT(', latitude, ' ', longitude, ')')),
+    point  POINT AS (POINT(latitude, longitude)) STORED NOT NULL,
     rent        INTEGER             NOT NULL,
     door_height INTEGER             NOT NULL,
     door_width  INTEGER             NOT NULL,
@@ -24,7 +24,8 @@ CREATE TABLE isuumo.estate
     rev_popularity INTEGER AS (-popularity),
     INDEX door_size(door_long, door_short),
     INDEX geo(latitude, longitude),
-    INDEX rev_popularity_id(rev_popularity)
+    INDEX rev_popularity_id(rev_popularity),
+    SPATIAL INDEX point_id(point
 );
 
 CREATE TABLE isuumo.chair
