@@ -74,6 +74,7 @@ type Estate struct {
 	Popularity  int64   `db:"popularity" json:"-"`
 	DoorLong    int64   `db:"door_long" json:"doorLong"`
 	DoorShort   int64   `db:"door_short" json:"doorShort"`
+	PointText   string  `db:"point_text" json:"pointText"`
 }
 
 //EstateSearchResponse estate/searchへのレスポンスの形式
