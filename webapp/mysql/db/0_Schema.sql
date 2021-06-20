@@ -21,7 +21,8 @@ CREATE TABLE isuumo.estate
     door_short  INTEGER AS (CASE WHEN door_height < door_width THEN door_height ELSE door_width END),
     features    VARCHAR(64)         NOT NULL,
     popularity  INTEGER             NOT NULL,
-    INDEX door_size(door_long, door_short)
+    INDEX door_size(door_long, door_short),
+    INDEX geo(latitude, longitude)
 );
 
 CREATE TABLE isuumo.chair
