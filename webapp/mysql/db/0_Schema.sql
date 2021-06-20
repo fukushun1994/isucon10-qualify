@@ -40,5 +40,7 @@ CREATE TABLE isuumo.chair
     kind        VARCHAR(64)     NOT NULL,
     popularity  INTEGER         NOT NULL,
     stock       INTEGER         NOT NULL,
-    INDEX price_id(price)
+    rev_popularity AS (-popularity),
+    INDEX price_id(price),
+    INDEX rev_popularity_id(rev_popularity)
 );
