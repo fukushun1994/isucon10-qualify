@@ -25,7 +25,7 @@ CREATE TABLE isuumo.estate
     INDEX door_size(door_long, door_short),
     INDEX geo(latitude, longitude),
     INDEX rev_popularity_id(rev_popularity),
-    SPATIAL INDEX point_id(point
+    SPATIAL INDEX point_id(point)
 );
 
 CREATE TABLE isuumo.chair
