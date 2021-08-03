@@ -213,11 +213,11 @@ func NewMySQLConnectionEnv() (estate *MySQLConnectionEnv, chair *MySQLConnection
 		Password: getEnv("MYSQL_ESTATE_PASS", "isucon"),
 	}
 	chair = &MySQLConnectionEnv{
-		Host:     getEnv("MYSQL_ESTATE_HOST", "127.0.0.1"),
-		Port:     getEnv("MYSQL_ESTATE_PORT", "3306"),
-		User:     getEnv("MYSQL_ESTATE_USER", "isucon"),
-		DBName:   getEnv("MYSQL_ESTATE_DBNAME", "isuumo"),
-		Password: getEnv("MYSQL_ESTATE_PASS", "isucon"),
+		Host:     getEnv("MYSQL_CHAIR_HOST", "127.0.0.1"),
+		Port:     getEnv("MYSQL_CHAIR_PORT", "3306"),
+		User:     getEnv("MYSQL_CHAIR_USER", "isucon"),
+		DBName:   getEnv("MYSQL_CHAIR_DBNAME", "isuumo"),
+		Password: getEnv("MYSQL_CHAIR_PASS", "isucon"),
 	}
 	return
 }
